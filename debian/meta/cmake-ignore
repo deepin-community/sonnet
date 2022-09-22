@@ -1,0 +1,4 @@
+# no clue, see ref 4870f3bf14da6f334ad4422b0b2d4161a79e7b8f does not explain anything
+- ASPELL
+- QCH , API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop):
+  series: xenial

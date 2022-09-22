@@ -1,0 +1,9 @@
+usr/include/KF5/SonnetCore/
+usr/include/KF5/SonnetUi/
+usr/include/KF5/sonnet_version.h
+usr/lib/*/cmake/KF5Sonnet/
+usr/lib/*/libKF5SonnetCore.so
+usr/lib/*/libKF5SonnetUi.so
+usr/lib/*/qt5/mkspecs/modules/qt_SonnetCore.pri
+usr/lib/*/qt5/mkspecs/modules/qt_SonnetUi.pri
+usr/lib/*/qt5/plugins/designer/sonnetui5widgets.so

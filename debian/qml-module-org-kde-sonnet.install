@@ -1,0 +1,3 @@
+usr/lib/*/qt5/qml/org/kde/sonnet/libsonnetquickplugin.so
+usr/lib/*/qt5/qml/org/kde/sonnet/plugins.qmltypes
+usr/lib/*/qt5/qml/org/kde/sonnet/qmldir
