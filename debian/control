@@ -8,7 +8,7 @@ Build-Depends: aspell,
                cmake (>= 3.16~),
                debhelper-compat (= 13),
                doxygen,
-               extra-cmake-modules (>= 5.90.0~),
+               extra-cmake-modules (>= 5.103.0~),
                hspell,
                libaspell-dev,
                libhunspell-dev,
@@ -24,7 +24,7 @@ Build-Depends: aspell,
                xauth,
                xvfb,
                zlib1g-dev,
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Homepage: https://invent.kde.org/frameworks/sonnet
 Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/sonnet
 Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/sonnet.git
@@ -40,7 +40,7 @@ Depends: libkf5sonnet-dev-bin (= ${binary:Version}),
          qtbase5-dev (>= 5.15.2~),
          ${misc:Depends},
          ${shlibs:Depends},
-Recommends: libkf5sonnet-doc (= ${source:Version})
+Recommends: libkf5sonnet-doc (= ${source:Version}),
 Description: spell checking library for Qt, devel files
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -48,15 +48,15 @@ Description: spell checking library for Qt, devel files
  .
  This package contains development files for building software that uses
  libraries from the Sonnet framework.
-Breaks: libkf5khtml-dev (<< 5.54), libkf5textwidgets-dev (<< 5.54)
+Breaks: libkf5khtml-dev (<< 5.54), libkf5textwidgets-dev (<< 5.54),
 
 Package: libkf5sonnet-dev-bin
 Section: libdevel
 Architecture: any
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Breaks: libkf5sonnet-dev (<< 5.27.0)
-Replaces: libkf5sonnet-dev (<< 5.27.0)
+Depends: ${misc:Depends}, ${shlibs:Depends},
+Breaks: libkf5sonnet-dev (<< 5.27.0),
+Replaces: libkf5sonnet-dev (<< 5.27.0),
 Description: spell checking library for Qt, devel binaries
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -67,7 +67,7 @@ Description: spell checking library for Qt, devel binaries
 Package: libkf5sonnet-doc
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}
+Depends: ${misc:Depends},
 Description: spell checking library for Qt (documentation)
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -79,7 +79,7 @@ Section: doc
 Package: libkf5sonnet5-data
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
 Description: spell checking library for Qt, data files
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -93,7 +93,7 @@ Multi-Arch: same
 Depends: libkf5sonnet5-data (= ${source:Version}),
          ${misc:Depends},
          ${shlibs:Depends},
-Recommends: sonnet-plugins (= ${binary:Version})
+Recommends: sonnet-plugins (= ${binary:Version}),
 Description: spell checking library for Qt, core lib
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -106,8 +106,8 @@ Breaks: kdesignerplugin (<< 5.42),
 Package: libkf5sonnetui5
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Recommends: sonnet-plugins (= ${binary:Version})
+Depends: ${misc:Depends}, ${shlibs:Depends},
+Recommends: sonnet-plugins (= ${binary:Version}),
 Description: spell checking library for Qt, ui lib
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -137,8 +137,8 @@ Package: sonnet-plugins
 Section: kde
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Suggests: hspell
+Depends: ${misc:Depends}, ${shlibs:Depends},
+Suggests: hspell,
 Description: spell checking library for Qt, plugins
  Sonnet is a Qt based library that offers easy access to spell
  checking using various plugin based backends.  It is part of KDE
@@ -149,7 +149,7 @@ Description: spell checking library for Qt, plugins
  be installed separatedly.
 
 Package: qml-module-org-kde-sonnet
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
 Architecture: any
 Multi-Arch: same
 Description: spell checking library for Qt, plugins

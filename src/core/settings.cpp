@@ -45,6 +45,8 @@ public:
 
     bool setData(const QModelIndex &idx, const QVariant &value, int role = Qt::EditRole) override
     {
+        Q_UNUSED(value)
+
         if (!checkIndex(idx) || role != Qt::CheckStateRole) {
             return false;
         }
@@ -190,7 +192,7 @@ void Settings::setAutodetectLanguage(bool detect)
     if (!d->loader->settings()->setAutodetectLanguage(detect)) {
         return;
     }
-    Q_EMIT autodetectLanguage();
+    Q_EMIT autodetectLanguageChanged();
     Q_EMIT modifiedChanged();
 }
 

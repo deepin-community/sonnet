@@ -83,8 +83,8 @@ SpellerPlugin *Loader::createSpeller(const QString &language, const QString &cli
 
     auto clientsItr = d->languageClients.constFind(plang);
     if (clientsItr == d->languageClients.constEnd()) {
-        if (language.isEmpty()) {
-            qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
+        if (language.isEmpty() || language == QStringLiteral("C")) {
+            qCDebug(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
             return createSpeller(QStringLiteral("en_US"), clientName);
         }
         qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
@@ -272,7 +272,7 @@ void Loader::loadPlugins()
 {
 #ifndef SONNET_STATIC
     const QStringList libPaths = QCoreApplication::libraryPaths() << QStringLiteral(INSTALLATION_PLUGIN_PATH);
-    const QLatin1String pathSuffix("/kf5/sonnet/");
+    const QString pathSuffix(QStringLiteral("/kf" QT_STRINGIFY(QT_VERSION_MAJOR)) + QStringLiteral("/sonnet/"));
     for (const QString &libPath : libPaths) {
         QDir dir(libPath + pathSuffix);
         if (!dir.exists()) {
@@ -298,10 +298,6 @@ void Loader::loadPlugin(const QString &pluginPath)
 {
 #ifndef SONNET_STATIC
     QPluginLoader plugin(pluginPath);
-    if (!plugin.load()) { // We do this separately for better error handling
-        qCWarning(SONNET_LOG_CORE) << "Sonnet: Unable to load plugin" << pluginPath << "Error:" << plugin.errorString();
-        return;
-    }
     const QString pluginIID = plugin.metaData()[QStringLiteral("IID")].toString();
     if (!pluginIID.isEmpty()) {
         if (d->loadedPlugins.contains(pluginIID)) {
@@ -309,6 +305,12 @@ void Loader::loadPlugin(const QString &pluginPath)
             return;
         }
         d->loadedPlugins.insert(pluginIID);
+    }
+
+    if (!plugin.load()) { // We do this separately for better error handling
+        qCDebug(SONNET_LOG_CORE) << "Sonnet: Unable to load plugin" << pluginPath << "Error:" << plugin.errorString();
+        d->loadedPlugins.remove(pluginIID);
+        return;
     }
 
     Client *client = qobject_cast<Client *>(plugin.instance());

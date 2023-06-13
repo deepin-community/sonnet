@@ -18,10 +18,10 @@
 
 namespace Sonnet
 {
-class Q_DECL_HIDDEN SpellCheckDecorator::Private
+class SpellCheckDecoratorPrivate
 {
 public:
-    Private(SpellCheckDecorator *installer, QPlainTextEdit *textEdit)
+    SpellCheckDecoratorPrivate(SpellCheckDecorator *installer, QPlainTextEdit *textEdit)
         : q(installer)
         , m_plainTextEdit(textEdit)
     {
@@ -32,7 +32,7 @@ public:
         m_plainTextEdit->viewport()->installEventFilter(q);
     }
 
-    Private(SpellCheckDecorator *installer, QTextEdit *textEdit)
+    SpellCheckDecoratorPrivate(SpellCheckDecorator *installer, QTextEdit *textEdit)
         : q(installer)
         , m_textEdit(textEdit)
     {
@@ -41,6 +41,18 @@ public:
         m_textEdit->installEventFilter(q);
         // Catch right-click
         m_textEdit->viewport()->installEventFilter(q);
+    }
+
+    ~SpellCheckDecoratorPrivate()
+    {
+        if (m_plainTextEdit) {
+            m_plainTextEdit->removeEventFilter(q);
+            m_plainTextEdit->removeEventFilter(q);
+        }
+        if (m_textEdit) {
+            m_textEdit->removeEventFilter(q);
+            m_textEdit->viewport()->removeEventFilter(q);
+        }
     }
 
     bool onContextMenuEvent(QContextMenuEvent *event);
@@ -53,7 +65,7 @@ public:
     Highlighter *m_highlighter = nullptr;
 };
 
-bool SpellCheckDecorator::Private::onContextMenuEvent(QContextMenuEvent *event)
+bool SpellCheckDecoratorPrivate::onContextMenuEvent(QContextMenuEvent *event)
 {
     if (!m_highlighter) {
         createDefaultHighlighter();
@@ -149,7 +161,7 @@ bool SpellCheckDecorator::Private::onContextMenuEvent(QContextMenuEvent *event)
     return true;
 }
 
-void SpellCheckDecorator::Private::execSuggestionMenu(const QPoint &pos, const QString &selectedWord, const QTextCursor &_cursor)
+void SpellCheckDecoratorPrivate::execSuggestionMenu(const QPoint &pos, const QString &selectedWord, const QTextCursor &_cursor)
 {
     QTextCursor cursor = _cursor;
     QMenu menu; // don't use KMenu here we don't want auto management accelerator
@@ -157,7 +169,7 @@ void SpellCheckDecorator::Private::execSuggestionMenu(const QPoint &pos, const Q
     // Add the suggestions to the menu
     const QStringList reps = m_highlighter->suggestionsForWord(selectedWord, cursor);
     if (reps.isEmpty()) {
-        QAction *suggestionsAction = menu.addAction(tr("No suggestions for %1").arg(selectedWord));
+        QAction *suggestionsAction = menu.addAction(SpellCheckDecorator::tr("No suggestions for %1").arg(selectedWord));
         suggestionsAction->setEnabled(false);
     } else {
         QStringList::const_iterator end(reps.constEnd());
@@ -168,8 +180,8 @@ void SpellCheckDecorator::Private::execSuggestionMenu(const QPoint &pos, const Q
 
     menu.addSeparator();
 
-    QAction *ignoreAction = menu.addAction(tr("Ignore"));
-    QAction *addToDictAction = menu.addAction(tr("Add to Dictionary"));
+    QAction *ignoreAction = menu.addAction(SpellCheckDecorator::tr("Ignore"));
+    QAction *addToDictAction = menu.addAction(SpellCheckDecorator::tr("Add to Dictionary"));
     // Execute the popup inline
     const QAction *selectedAction = menu.exec(pos);
 
@@ -198,7 +210,7 @@ void SpellCheckDecorator::Private::execSuggestionMenu(const QPoint &pos, const Q
     }
 }
 
-void SpellCheckDecorator::Private::createDefaultHighlighter()
+void SpellCheckDecoratorPrivate::createDefaultHighlighter()
 {
     if (m_textEdit) {
         m_highlighter = new Highlighter(m_textEdit);
@@ -209,20 +221,17 @@ void SpellCheckDecorator::Private::createDefaultHighlighter()
 
 SpellCheckDecorator::SpellCheckDecorator(QTextEdit *textEdit)
     : QObject(textEdit)
-    , d(new Private(this, textEdit))
+    , d(std::make_unique<SpellCheckDecoratorPrivate>(this, textEdit))
 {
 }
 
 SpellCheckDecorator::SpellCheckDecorator(QPlainTextEdit *textEdit)
     : QObject(textEdit)
-    , d(new Private(this, textEdit))
+    , d(std::make_unique<SpellCheckDecoratorPrivate>(this, textEdit))
 {
 }
 
-SpellCheckDecorator::~SpellCheckDecorator()
-{
-    delete d;
-}
+SpellCheckDecorator::~SpellCheckDecorator() = default;
 
 void SpellCheckDecorator::setHighlighter(Highlighter *highlighter)
 {
