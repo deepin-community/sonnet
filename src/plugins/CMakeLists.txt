@@ -25,7 +25,7 @@ endif ()
 
 find_package(HUNSPELL)
 set_package_properties(HUNSPELL PROPERTIES
-    URL "http://hunspell.sourceforge.net/"
+    URL "https://hunspell.github.io/"
     DESCRIPTION "Spell checking support via Hunspell"
     TYPE OPTIONAL
 )
@@ -36,7 +36,7 @@ endif ()
 
 find_package(VOIKKO)
 set_package_properties(VOIKKO PROPERTIES
-    URL "http://voikko.puimula.org/"
+    URL "https://voikko.puimula.org/"
     DESCRIPTION "Spell checking support via Voikko"
     TYPE OPTIONAL
 )
@@ -48,6 +48,6 @@ if (APPLE)
     add_subdirectory( nsspellchecker )
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (WIN32)
     add_subdirectory( ispellchecker )
 endif ()

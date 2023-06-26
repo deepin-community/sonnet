@@ -1,6 +1,6 @@
+usr/include/KF5/Sonnet/
 usr/include/KF5/SonnetCore/
 usr/include/KF5/SonnetUi/
-usr/include/KF5/sonnet_version.h
 usr/lib/*/cmake/KF5Sonnet/
 usr/lib/*/libKF5SonnetCore.so
 usr/lib/*/libKF5SonnetUi.so

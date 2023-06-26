@@ -76,10 +76,13 @@ set_target_properties(KF5SonnetCore PROPERTIES VERSION ${SONNET_VERSION}
 )
 
 # CMAKE_CURRENT_BINARY_DIR: for camelcase headers and lowercase forwarders
-target_include_directories(KF5SonnetCore INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/SonnetCore>")
+target_include_directories(KF5SonnetCore INTERFACE
+    "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/SonnetCore>"
+    "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/Sonnet>"
+)
 target_include_directories(KF5SonnetCore PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>")
 
-install(TARGETS KF5SonnetCore EXPORT KF5SonnetTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5SonnetCore EXPORT KF5SonnetTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES ${SonnetCore_CamelCase_HEADERS} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/SonnetCore/Sonnet COMPONENT Devel)
 
@@ -113,5 +116,13 @@ if (BUILD_QCH)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME SonnetCore LIB_NAME KF5SonnetCore DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/SonnetCore)
+ecm_generate_pri_file(
+    BASE_NAME SonnetCore
+    LIB_NAME KF5SonnetCore
+    DEPS "core"
+    FILENAME_VAR PRI_FILENAME
+    INCLUDE_INSTALL_DIRS
+        ${KDE_INSTALL_INCLUDEDIR_KF}/Sonnet
+        ${KDE_INSTALL_INCLUDEDIR_KF}/SonnetCore
+)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
